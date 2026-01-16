@@ -26,8 +26,8 @@ Console.WriteLine("Hello, World!"); //method call statement
 
 //default for numeric is 0
 
-double rawGrade;
-double assignmentWeight, maxGrade;
+int rawGrade;
+int assignmentWeight, maxGrade;
 double weightedMark = 0.0;
 
 //decimal literals need to be identified by having an m suffix at the end
@@ -80,7 +80,7 @@ maxGrade = int.Parse(inputValue);
 
 Console.Write("Enter the your received grade value:\t");
 inputValue = Console.ReadLine();
-rawGrade = double.Parse(inputValue);
+rawGrade = int.Parse(inputValue);
 
 //Calculation
 //all standard rules of math apply in this language
@@ -94,7 +94,17 @@ rawGrade = double.Parse(inputValue);
 //a) change the datatype of your variables
 //      may cause problems elsewhere in your code, REMEMBER to retest your program
 
-weightedMark = rawGrade / maxGrade * assignmentWeight;
+//b) if one of the variables' datatype is different then others
+//      and allows for increased numeric representation (ie integer to double)
+//      then C# will attempt to do the calculation at the greater
+//      numeric representation
+// rawGrade is a double (increased numeric representation)
+
+//c) use a type-cast on your field(s)
+//      a type-cast is a temporary internal changing of how to handle
+//      the variable's data
+
+weightedMark = rawGrade / (double)maxGrade * assignmentWeight;
 
 //output
 //string concatenation : numerics
@@ -103,6 +113,11 @@ weightedMark = rawGrade / maxGrade * assignmentWeight;
 Console.WriteLine("\nYour mark in " + courseID +
                     " is " + Math.Round(weightedMark,1));
 
+// index replacement string creation
+Console.WriteLine("\nYour mark in {0} is {1:##0.0}", courseID, weightedMark);
+
+//string interpolation (preferred)
+Console.WriteLine($"\nYour mark in {courseID} is {weightedMark.ToString("#,##0.00")}");
 
 //if your console app does not stop and remain visible
 // try using the following to keep the window open
