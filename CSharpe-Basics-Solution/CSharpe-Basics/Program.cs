@@ -26,8 +26,8 @@ Console.WriteLine("Hello, World!"); //method call statement
 
 //default for numeric is 0
 
-int rawGrade;
-int assignmentWeight, maxGrade;
+double rawGrade;
+int assignmentWeight, maxGrade = 0;
 double weightedMark = 0.0;
 
 //decimal literals need to be identified by having an m suffix at the end
@@ -70,55 +70,136 @@ Console.Write("Enter the course id:\t");
 inputValue = Console.ReadLine();
 courseID = inputValue;
 
+
+
 Console.Write("Enter the course mark weight:\t");
 inputValue = Console.ReadLine();
 assignmentWeight = int.Parse(inputValue);
 
-Console.Write("Enter the maximum grade value:\t");
-inputValue = Console.ReadLine();
-maxGrade = int.Parse(inputValue);
+//example of looping to obtain a valid input value
+bool flag = false;
+while (flag != true) //(flag == false)
+{
+    Console.Write("Enter the maximum grade value:\t");
+    inputValue = Console.ReadLine();
+
+    //TryParse attempts to convert your value
+    //  if successful, it places the converted value in the out variable
+    //                 and returns a true value
+    //  if unsuccessful, no conversion is done, the out variable receives no value
+    //                  and returns a false value
+    if (int.TryParse(inputValue, out maxGrade))
+    {
+        //the conversion was successful
+        //the converted value is in maxGrade
+        if (maxGrade <= 0)
+        {
+            Console.WriteLine($"\n\tMaximum grade is cannot be a negative number\n");
+        }
+        else
+            //remember if you have a single statement in your
+            //  coding block, the { } are optional
+            flag = true;
+    }
+    else
+    {
+        //the conversion was unsuccessful
+        //the maxGrade is not altered
+        //output an appropriate message
+        Console.WriteLine($"\n\tMaximum grade is not an integer numeric value\n");
+    }
+}
 
 Console.Write("Enter the your received grade value:\t");
 inputValue = Console.ReadLine();
-rawGrade = int.Parse(inputValue);
+rawGrade = double.Parse(inputValue);
 
-//Calculation
-//all standard rules of math apply in this language
+//when using a structure that could require a group of statement
+//  to be executed, you will need to place the group in a coding block {....}
+//if you structure will only require one statement
+//  to be executed then the coding block { } are optional
 
-//the result of your calculation is dependent on your
-//  variable data type
-//problem here is the calculation variables are integers
-//          therefore the calculation uses the rules of integer arth.
+// if ()
+//    statement 1; ONLY statement 1 is consider to be part of the if structure
+//    statement 2:
 
-//Solutions:
-//a) change the datatype of your variables
-//      may cause problems elsewhere in your code, REMEMBER to retest your program
+// if ()
+//  {
+//    statement 1; 
+//    statement 2:
+//  }
 
-//b) if one of the variables' datatype is different then others
-//      and allows for increased numeric representation (ie integer to double)
-//      then C# will attempt to do the calculation at the greater
-//      numeric representation
-// rawGrade is a double (increased numeric representation)
+//condition statement
+//a) if (condition) [{] true path [}]
+//b) if (condition) [{] true path [}] else [{] false path[}]
+//c) if (condition) [{] true path [}] else if (condition) [{] true path [}] .... else [{] false path[}]
+//d) result value = (condition) ? true value : false value;
+// as long a the code for the true value or false value resolves to a 
+//      single value, your statement is valid
+// result value = (condition) ? methodname(...) : false value; valid statement as the method returns ONLY a single value
+// result value = (condition) ? true value : (condition) ? true value : false value; valid statement
 
-//c) use a type-cast on your field(s)
-//      a type-cast is a temporary internal changing of how to handle
-//      the variable's data
+//logical operator
+// and: &&
+// or: ||
+// not: !
+// bit-wise and: &
+// bit-wise or: |
 
-weightedMark = rawGrade / (double)maxGrade * assignmentWeight;
+if (rawGrade < 0 || rawGrade > maxGrade)
+{
+    //true path
+    Console.WriteLine($"Your raw grade of {rawGrade} is invalid." +
+        $" You need a value between 0 and {maxGrade}");
 
-//output
-//string concatenation : numerics
+    //using a return or exit or break or continue command
+    //  within a coding structure will be considered unstructured code
+    //AND
+    // result in marks lost in evalutation of your work.
+    //return;
+}
+else
+{
 
-//use the concatenation operator: +
-Console.WriteLine("\nYour mark in " + courseID +
-                    " is " + Math.Round(weightedMark,1));
 
-// index replacement string creation
-Console.WriteLine("\nYour mark in {0} is {1:##0.0}", courseID, weightedMark);
+    //Calculation
+    //all standard rules of math apply in this language
 
-//string interpolation (preferred)
-Console.WriteLine($"\nYour mark in {courseID} is {weightedMark.ToString("#,##0.00")}");
+    //the result of your calculation is dependent on your
+    //  variable data type
+    //problem here is the calculation variables are integers
+    //          therefore the calculation uses the rules of integer arth.
 
-//if your console app does not stop and remain visible
-// try using the following to keep the window open
-//Console.ReadKey();
+    //Solutions:
+    //a) change the datatype of your variables
+    //      may cause problems elsewhere in your code, REMEMBER to retest your program
+
+    //b) if one of the variables' datatype is different then others
+    //      and allows for increased numeric representation (ie integer to double)
+    //      then C# will attempt to do the calculation at the greater
+    //      numeric representation
+    // rawGrade is a double (increased numeric representation)
+
+    //c) use a type-cast on your field(s)
+    //      a type-cast is a temporary internal changing of how to handle
+    //      the variable's data
+
+    weightedMark = rawGrade / (double)maxGrade * assignmentWeight;
+
+    //output
+    //string concatenation : numerics
+
+    //use the concatenation operator: +
+    Console.WriteLine("\nYour mark in " + courseID +
+                        " is " + Math.Round(weightedMark,1));
+
+    // index replacement string creation
+    Console.WriteLine("\nYour mark in {0} is {1:##0.0}", courseID, weightedMark);
+
+    //string interpolation (preferred)
+    Console.WriteLine($"\nYour mark in {courseID} is {weightedMark.ToString("#,##0.00")}");
+
+    //if your console app does not stop and remain visible
+    // try using the following to keep the window open
+    //Console.ReadKey();
+}
