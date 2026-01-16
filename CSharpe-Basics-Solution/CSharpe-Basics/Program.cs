@@ -26,8 +26,8 @@ Console.WriteLine("Hello, World!"); //method call statement
 
 //default for numeric is 0
 
-int rawGrade;
-int assignmentWeight, maxGrade;
+double rawGrade;
+double assignmentWeight, maxGrade;
 double weightedMark = 0.0;
 
 //decimal literals need to be identified by having an m suffix at the end
@@ -49,4 +49,61 @@ string courseID;
 //.Now has a date of today and a time portion of hh:mm:ss am/pm
 DateTime theDate = DateTime.Today;
 
+//calculate the weighted mark for an assessment in a course
+//inputs: mark weight, maximum grade, raw grade, courseid
+//process:
+//  input values
+//  calculate weighted mark
+//  output a message with the weighted mark
 
+//input values
+// reading command is Console.ReadLine();
+// all input come in as a string
+// To convert to a specific datatype, investigate if the datatype
+//      has a .Parse() method
+
+string inputValue;
+
+// prompt, read, store (may need to parse the incoming value)
+//prompt: .Write() this method will NOT proceed to the need line
+Console.Write("Enter the course id:\t");
+inputValue = Console.ReadLine();
+courseID = inputValue;
+
+Console.Write("Enter the course mark weight:\t");
+inputValue = Console.ReadLine();
+assignmentWeight = int.Parse(inputValue);
+
+Console.Write("Enter the maximum grade value:\t");
+inputValue = Console.ReadLine();
+maxGrade = int.Parse(inputValue);
+
+Console.Write("Enter the your received grade value:\t");
+inputValue = Console.ReadLine();
+rawGrade = double.Parse(inputValue);
+
+//Calculation
+//all standard rules of math apply in this language
+
+//the result of your calculation is dependent on your
+//  variable data type
+//problem here is the calculation variables are integers
+//          therefore the calculation uses the rules of integer arth.
+
+//Solutions:
+//a) change the datatype of your variables
+//      may cause problems elsewhere in your code, REMEMBER to retest your program
+
+weightedMark = rawGrade / maxGrade * assignmentWeight;
+
+//output
+//string concatenation : numerics
+
+//use the concatenation operator: +
+Console.WriteLine("\nYour mark in " + courseID +
+                    " is " + Math.Round(weightedMark,1));
+
+
+//if your console app does not stop and remain visible
+// try using the following to keep the window open
+//Console.ReadKey();
