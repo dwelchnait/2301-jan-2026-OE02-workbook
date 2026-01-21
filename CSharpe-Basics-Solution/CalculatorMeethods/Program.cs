@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using System.Numerics;
+
 Console.WriteLine("Its a bunch of small worlds (after all)!!!!");
 
 //discover the components of a method
@@ -28,7 +30,6 @@ Console.WriteLine("Its a bunch of small worlds (after all)!!!!");
 // variables use camelCase
 int num1 = 0;
 int num2 = 0;
-double result = 0.0;
 string choice = ""; //empty string
 
 //call a method
@@ -40,7 +41,15 @@ string prompt = "Enter your first calculation number:";
 num1 = GetIntegerNumber(prompt);
 num2 = GetIntegerNumber("Enter your second calculation number:");
 
+//get the desired calculator operation
+//there is no parameters to this method (thus no arguments on call statement)
+//it does return a value
+choice = GetCalculatorOperation();
 
+//a method does NOT need to return a value
+//note: no receiving variable
+//      the method is not returning any value
+PerformCalculation(choice, num1, num2);
 
 
 //eod end of driver, this terminates the program
@@ -116,4 +125,74 @@ static int GetIntegerNumber(string prompt)
     //this method must return an integer value
     //keyword -> return value;
     return localNumber;
+}
+
+static string GetCalculatorOperation()
+{
+    //any variable declared within this method has no association
+    //  with any variable outside of the method
+    //variables within a method may have the same name as a variable
+    //  outside of the method
+    //these variables are independent (restriction due to "static")
+
+    //NOTE: NO VALIDATION IS BEING DONE IN THESE EXAMPLES
+    string choice = ""; //local variable
+    Console.WriteLine("\nCalculator Operations");
+    Console.WriteLine("a: Addition");
+    Console.WriteLine("s: Subtration");
+    Console.WriteLine("m: Multiplication");
+    Console.WriteLine("d: Division");
+    Console.Write("Enter your operator choice:\t");
+
+    choice = Console.ReadLine();
+
+    return choice;
+}
+
+static void PerformCalculation(string choice, int num1, int num2)
+{
+    double result = 0.0;
+    //Case statement for C#
+    // a single value compared to a number of possibilities
+    //      and a single one of the possibilities is matched to the argument value
+
+    //NOTE: the break command within the switch statement is PART OF the switch structure
+    //      THEREFORE it is NOT considered unstructured code!!!!!!!
+    switch (choice.ToLower())
+    {
+        case "a":
+            {
+                //Can a method call another method? YES!!!!!
+                result = Addition(num1, num2);
+                Console.WriteLine($"\nThe sum of {num1} + {num2} is {result}");
+                break; //this is not unstructured code, it is  part of the switch structure
+            }
+        case "s":
+            {
+                break;
+            }
+        case "m":
+            {
+                break;
+            }
+        case "d":
+            {
+                break;
+            }
+        default:
+            {
+                //this last "case" is the "fall-thru" if no previous case was executed
+                //this "case" is typically used for invalid messages
+                Console.WriteLine($"\nYour operator choice of >{choice}< is invalid");
+                break;
+            }
+    }
+
+}
+
+static double Addition(int num1, int num2)
+{
+    //Why can I add to integers together and return a double
+    //Reason: an integer can be absored by a double
+    return num1 + num2; 
 }
