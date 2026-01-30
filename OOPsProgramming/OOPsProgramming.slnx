@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="LearningObjects/LearningObjects.csproj" />
+  <Project Path="OOPsUnitTesting/OOPsUnitTesting.csproj" Id="8804eaa1-0b6f-4305-9b85-d888ba604a8d" />
 </Solution>
