@@ -45,6 +45,15 @@ Console.WriteLine($"\nThe contents of Name on my instance (object) is {me.Name}"
 me.Name = "   Terry    ";
 Console.WriteLine($"The new contents of Name on my instance (object) is >{me.Name}<");
 
+Console.WriteLine($"\nThe contents of Wage on my instance (object) is {me.Wage}");
+
+//Because Wage setter is private, you CANNOT alter the wage like the property Name, directly
+//me.Wage = 47.00m;
+
+//Instead you will have to use the method created in the class specially for altering Wage
+me.ChangeWage(47.00m);
+Console.WriteLine($"The new contents of Wage on my instance (object) is >{me.Wage}<");
+
 //what happens if I attempt to assign an invalid value to a field on your instance
 //example of user friendly error handling
 //problem: a negative age will cause an exception to be thrown by the class
