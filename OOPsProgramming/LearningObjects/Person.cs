@@ -170,7 +170,19 @@ namespace LearningObjects
         //create an auto implemented property for Wage data
         //the o/s will create the storage area for saving the data within the class instance (object)
         //therefore no data member is required for this property
-        public decimal Wage { get; set; }
+
+        //one option on the setter is to make it private
+        //if private:
+        //  changes to this data will ONLY be done via a constructor or a method
+        //  one will NOT be able to directly change the data via the property
+        //  the ONLY code that could change Wage is code that exists within the Person class
+        //  DO NOT make your getter private
+
+        //if your validation is NOT in the property, EVERY time you alter the data
+        //  you NEED to consider if validation is required.
+        //if validation is required, that validation MUST be placed in your code
+        //  WHEREVER the alternation is done
+        public decimal Wage { get; private set; }
 
         //methods
         //  constructor
@@ -276,6 +288,18 @@ namespace LearningObjects
             //in this example the delimiter for the value will be a ; due to the fact
             //  I wish to use a comma , in the Wage display
             return $"{Name};{Age};{Wage.ToString("#,##0.00")}";
+        }
+
+        //this method will allow the alteration of the Wage data
+        //if the setter on Wage was NOT private then this method would NOT be needed
+        public void ChangeWage(decimal newwage)
+        {
+            //is there required validation: YES
+            //is the validation in the property: NO (we have an auto-implemented property)
+            //THEREFORE you WILL need to REPEAT the validation in this method
+            if (newwage < 0)
+                throw new ArgumentException($"The wage {newwage} is invalid. Wage must be 0 or greater.", "Wage");
+            Wage = newwage;
         }
     }
 }
