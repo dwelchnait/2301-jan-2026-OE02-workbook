@@ -115,6 +115,34 @@ namespace OOPsUnitTesting
             //Assert.Equal(70, sut.Age);
             //Assert.Equal("Don", sut.Name);
         }
+        [Fact]
+        public void Successfully_Create_A_ToString_Of_The_Instance()
+        {
+            //Arrange
+            Person sut = new Person("Don", 70, 43.56m);
+
+            //Act
+            //string expectedToString = sut.ToString();
+
+            //Assert
+            //Assert.Equal("Don;70;43.56", expectedToString);
+            Assert.Equal("Don;70;43.56", sut.ToString());
+        }
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(10)]
+        public void Successfully_Calculate_The_Bonus(decimal years)
+        {
+            //Arrange
+            Person sut = new Person("Don", 70, 43.56m);
+            decimal expectedBonus = 43.56m * years / 100;
+            //Act
+
+            //Assert
+            Assert.Equal(expectedBonus, sut.CalculateBonus(years));
+        }
+        
         #endregion
 
         #region Testing with Invalid data
@@ -170,6 +198,86 @@ namespace OOPsUnitTesting
             //syntax of the Act: () => the code to execute
             Assert.Throws<ArgumentNullException>(() => new Person(name, 70, 14.00m));
         }
+        //[Theory]
+        //[InlineData(-1)]
+       
+        //public void Fail_To_Create_Instance_For_Invalid_Age(int age)
+        //{
+        //   //Arrange
+
+        //    //Act
+
+        //    //Assert
+        //    Assert.Throws<ArgumentException>(() => new Person("Don", age, 14.00m));
+        //}
+
+        [Fact]
+
+        public void Fail_To_Create_Instance_For_Invalid_Age()
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => new Person("Don", -1, 14.00m));
+        }
+        [Theory]
+        [InlineData(-0.01)]
+        [InlineData(-20.01)]
+
+        public void Fail_To_Create_Instance_For_Invalid_Wage(decimal wage)
+        {
+            //Arrange
+
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => new Person("Don", 70, wage));
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("   ")]
+        public void Fail_To_Alter_Invalid_Name_VIA_Property(string name)
+        {
+            //Arrange
+
+            Person sut = new Person("Don", 70, 14.00m);
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentNullException>(() => sut.Name = name);
+        }
+
+        [Fact]
+
+        public void Fail_To_Alter_Invalid_Age_Via_Property()
+        {
+            //Arrange
+            Person sut = new Person("Don", 70, 14.00m);
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => sut.Age = -1);
+        }
+
+        [Theory]
+        [InlineData(-0.01)]
+        [InlineData(-20.01)]
+
+        public void Fail_To_Alter_Invalid_Wage_VIA_ChangeWage(decimal wage)
+        {
+            //Arrange
+            Person sut = new Person("Don", 70, 14.00m);
+            //Act
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => sut.ChangeWage(wage));
+        }
         #endregion
     }
 }
+
+

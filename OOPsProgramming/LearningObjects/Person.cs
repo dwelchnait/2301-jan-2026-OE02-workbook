@@ -115,8 +115,8 @@ namespace LearningObjects
             set 
             { 
                 //validate that the Name cannot be null, empty or just blank characters
-                if (string.IsNullOrWhiteSpace(value))
-                {
+               if (string.IsNullOrWhiteSpace(value))
+               {
                     //classes do not output directly to the program user
                     //classes throw Exceptions that are handled by the program and displayed to the 
                     //  human user
@@ -126,9 +126,9 @@ namespace LearningObjects
                     //      ArgumentNullException (used when missing a value)
                     //      ArgumentException ( used when the value supplied is incorrect)
                     throw new ArgumentNullException("Name", "Name cannot be empty or just blanks");
-                }
-                else
-                {
+               }
+               else
+               {
                     //has an actual character(s) in the value
                     // "    don welch     "
                     //it is a very good practice to remove leading and trailing spaces on strings
@@ -136,7 +136,7 @@ namespace LearningObjects
                     //to do this sanitization use .Trim()
                     //this does not remove embedded blanks:  "don welch"
                     _Name = value.Trim();
-                }
+               }
             }
         }
 
@@ -237,6 +237,7 @@ namespace LearningObjects
         //  is not included on the coded constructor in the user program
         public Person(string name, int age, decimal wage = 0.00m)
         {
+
             Name = name;
             Age = age;
 
@@ -252,6 +253,7 @@ namespace LearningObjects
             //         must be 0 or greater
             if (wage < 0)
                 throw new ArgumentException($"The wage {wage} is invalid. Wage must be 0 or greater.","Wage");
+                //throw new ArgumentOutOfRangeException("Wage", $"The wage {wage} is invalid. Wage must be 0 or greater.");
             //here, if the throw happen, execution would proceed to the end of the constructor
             //  and NOT set Wage
             //AND
