@@ -2,6 +2,7 @@
 
 #region Aditional Namespaces
 using LearningObjects;
+using LinqExploration;
 #endregion
 Console.WriteLine("\n\tWorld of Exploration on Collections\n\n");
 
@@ -14,6 +15,14 @@ Console.WriteLine("\n\tWorld of Exploration on Collections\n\n");
 //          <T> indicates the datatype of the items being held
 
 List<Person> workers = new List<Person>();   //this will create an empty list
+
+//the above statement could have been done in two statements
+
+//a variable capable of holding a List instance of datatype Person
+//List<Person> workers = null; 
+
+//create the List<T> instance
+//workers = new List<Person>();
 
 //create an instance of your class
 Person person = new Person("Don", 70, 101500.00m);
@@ -179,3 +188,55 @@ if (LinqfoundThem != null)
     Console.WriteLine($"\nFound {OrderLinqfoundThem.Name} is of age {OrderLinqfoundThem.Age}.");
 else
     Console.WriteLine($"\nNo workers in that age bracket.");
+
+/* ************* STEP 4: Projections from a Collection**************** */
+
+// the Linq method(clause) to use is the .Select(predicate)
+
+// allows for subset of particular attributes to be extracted from
+//      a collection, expressions to generate new attributes
+//the protection can be 1 of 3 types
+//  a) Anonymous type
+//  b) Named (Strongly) type (to an existing class definition)
+//  c) tuple
+
+//Anonymous type
+// in this type no predefine class definition exists
+// the returned dataset will be an IEnumerable<T>
+// if you wish you could return a List<anonymowtype> if you use .ToList()
+var results = workers.Select(x => new {x.Name, x.Wage });
+
+//this gives a collection of
+//      {Name= "value", Wage="value" }
+
+Console.WriteLine($"\nProjected Anonymous Worker list Collection\n");
+foreach (var item in results)
+{
+    Console.WriteLine($"The item in the collection is; {item.Name} and {item.Wage}");
+}
+
+//Name type
+// in this type HAS a predefine class definition 
+// in this example we will generate the Bonus value using an expression
+var resultsName = workers.Select(x => new ProjectedPerson {Name = x.Name,
+                                                           Age = x.Age,
+                                                           Bonus = x.Wage * x.Age / 1000.0m });
+
+Console.WriteLine($"\nProjected Named Worker list Collection\n");
+foreach (var item in resultsName)
+{
+    Console.WriteLine($"The item in the collection is; {item.Name} and {item.Age} with a  bonus of {item.Bonus}");
+}
+
+//tuple
+//quick and easy temporary collections
+// collection[0].Name
+// collection[0].Age
+//the predicate grammar is different then the other two styles
+
+var resultsTuple = workers.Select(x => ( x.Name, x.Age ));
+Console.WriteLine($"\nProjected Tuple Worker list Collection\n");
+foreach (var item in resultsTuple)
+{
+    Console.WriteLine($"The item in the Tuple collection is; {item.Name} then {item.Age}");
+}
