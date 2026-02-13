@@ -16,4 +16,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SQLiteDemos.System\SQLiteDemos.System.csproj" />
+  </ItemGroup>
+
 </Project>

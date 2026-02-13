@@ -1,13 +1,48 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SQLiteDemos;
-using System;
+﻿using System;
 using System.Linq;
+
+#region Additional Namespaces
+using Microsoft.EntityFrameworkCore;
+using SQLiteDemos.System;
+using SQLiteDemos;
+#endregion
 
 // See https://aka.ms/new-console-template for more information
 Console.WriteLine("\n\t\tHello, SQLite World!\n");
 
+//we will need to go to NuGet Packages and include the following
+// MicroSoft.EntityFrameworkCore
+// MicroSoft.EntityFrameworkCore.Tools
+// MicroSoft.EntityFrameworkCore.SQLite
+
+//these packages are add to your project under Dependencies
+//this has to be done ONCE for your project
+
+// Force SQLite to use a single database file in the project root.
+// Prevents "no such table" errors caused by different working directories
+//adjusted path, one needs to know the location of your .exe
+//      AppDomain.CurrentDomain.BaseDirectory
+//once the .exe location is known, I can combine that location with
+//      relative address to reach the desired location of the SQLite file
+var dbPath = Path.Combine(
+    AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "demo.db");
+
+//however we need to know the location of your application on the drive
+//phyiscal absolute address location
+dbPath = Path.GetFullPath(dbPath);
+
+//setup the connection string information into a variable that can be 
+//      pass to the AppDbContext class
+//This allows for the user developing a front end for an existing system
+//      indicate their desired database location
+
+var options = new DbContextOptionsBuilder<AppDBContext>()
+    .UseSqlite($"Data Source={dbPath}")
+    .Options;
+
+
 //create an instance of the context class to be used by the program
-using AppDBContext context = new AppDBContext();
+using AppDBContext context = new AppDBContext(options);
 
 //if you wish to start your application with a clean file on every execution
 // use the following
