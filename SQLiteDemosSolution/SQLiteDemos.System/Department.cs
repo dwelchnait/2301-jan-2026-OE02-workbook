@@ -19,5 +19,8 @@ namespace SQLiteDemos.System
         [Required(ErrorMessage = "Department Name is required. Name cannot be empty.")]
         [StringLength(100, ErrorMessage = "Department Name is limited to 100 characters.")]
         public string DepartmentName { get; set; }
+
+        //Navigational property
+        public List<Person> People { get; set; } = new (); //data default to the variable/property datatype
     }
 }

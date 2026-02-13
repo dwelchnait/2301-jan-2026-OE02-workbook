@@ -54,12 +54,23 @@ namespace SQLiteDemos.System
                 entity.Property(e => e.Mark)
                      .IsRequired();
 
+                // 👇 MANY-TO-MANY CONFIGURATION GOES HERE
+                // place in only ONE of the two entities related
+                //    either this entity People or Department (below)
+                //entity.HasMany(d => d.Departments)
+                // .WithMany(p => p.People);
             });
 
             modelBuilder.Entity<Department>(d =>
             {
                 d.HasKey(e => e.Id);
                 d.HasIndex(e => e.Code).IsUnique();
+
+                // 👇 MANY-TO-MANY CONFIGURATION GOES HERE
+                // place in only ONE of the two entities related
+                //    either this entity Department or People (above)
+                d.HasMany(p => p.People)
+                 .WithMany(d => d.Departments);
             });
         }
     }

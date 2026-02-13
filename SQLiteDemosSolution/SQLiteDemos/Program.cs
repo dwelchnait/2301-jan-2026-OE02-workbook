@@ -46,7 +46,10 @@ using AppDBContext context = new AppDBContext(options);
 
 //if you wish to start your application with a clean file on every execution
 // use the following
-//context.Database.EnsureDeleted();
+//WARNING: if you alter your entities, add a new entity or remove an entity
+//          from your database, you MUST drop your current database and
+//          recreate the db SQLite file.
+context.Database.EnsureDeleted();
 
 //ensure that your database file exists
 // if the database does not exist, then the data is created using the context class
@@ -62,18 +65,36 @@ Person person = new Person("bob",20,97);
 //stage the data in memory to the DbSet collection
 context.People.Add(person);
 
+
+Department department = new Department();
+department.Code = "SDEV";
+department.DepartmentName = "Software Development";
+
+//stage the data in memory to the DbSet collection
+context.Departments.Add(department);
+
+
 //persist the data from memory to the database
 context.SaveChanges();
 
 //use Linq to get the data records from the datastore via the context DbSet
-List<Person> datastoreContents = new List<Person>();
-datastoreContents = context.People.OrderBy(p => p.Name).ToList();
+List<Person> peopleContents = new List<Person>();
+peopleContents = context.People.OrderBy(p => p.Name).ToList();
 
 //display the current contains of People
-foreach( var item in datastoreContents)
+foreach( var item in peopleContents)
 {
     Console.WriteLine($"ID {item.Id} Name: {item.Name} Age: {item.Age} Mark: {item.Mark}");
 }
 
+//use Linq to get the data records from the datastore via the context DbSet
+List<Department> departmentContents = new List<Department>();
+departmentContents = context.Departments.OrderBy(d => d.Code).ToList();
+
+//display the current contains of People
+foreach (var item in departmentContents)
+{
+    Console.WriteLine($"ID {item.Id} Code: {item.Code} Name: {item.DepartmentName}");
+}
 
 

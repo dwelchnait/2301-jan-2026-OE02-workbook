@@ -46,5 +46,14 @@ namespace SQLiteDemos.System
             Age=age;
             Mark=mark;
         }
+
+        //Navigational property
+        //these property are used to allow for inclusion of data from
+        //  other tables in a relational fashion such as 1:m or many to many
+        //depending on your software and project type this code may be different
+
+        //when you create your property, you refer to the entity that is
+        //  on the other side of your relationship
+        public List<Department> Departments { get; set; } = new List<Department>();
     }
 }
