@@ -66,5 +66,35 @@ namespace SQLiteDemos.System.Services
                                 .ToListAsync();
         }
         #endregion
+
+
+        #region Manipluate Data (Add, Update, Delete services)
+
+        //Add a department to the database
+        //you could pass in each pieces of data as a separate parameter
+        //you could pass in an instance of the class as the parameter
+        //Task is used when nothing is returned
+        public async Task Department_Add(Department department)
+        {
+            //Guard Rail
+            //ensures that you have data to use with
+            //basically validate that you have data to use
+            ArgumentNullException.ThrowIfNull(department, nameof(department));
+
+            //Stage the add
+            //remember this is done in memory and NOT to the database
+            //  therefore this does NOT need to use await/async
+            //  BUT there exists Async staging command if you wish to use them
+            _context.Departments.Add(department);
+            //could also stage using the following
+            //await _context.Departments.AddAsync(department);
+
+            //Commit to database
+            //this will touch the database
+            //this will use await/async
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
     }
 }

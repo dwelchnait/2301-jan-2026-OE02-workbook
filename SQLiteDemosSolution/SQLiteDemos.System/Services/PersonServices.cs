@@ -46,5 +46,25 @@ namespace SQLiteDemos.System.Services
                                 .ToListAsync();
         }
         #endregion
+
+        #region Manipluate Data (Add, Update, Delete services)
+
+        //Add a person to the database
+        //you could pass in each pieces of data as a separate parameter
+        //you could pass in an instance of the class as the parameter
+        //Task is used when nothing is returned
+        public async Task Person_Add(Person person)
+        {
+            //Guard Rail
+            ArgumentNullException.ThrowIfNull(person, nameof(person));
+
+            //Stage the add
+            _context.People.Add(person);
+
+            //Commit to database
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
     }
 }

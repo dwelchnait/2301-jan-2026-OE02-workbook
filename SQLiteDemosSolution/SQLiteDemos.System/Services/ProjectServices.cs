@@ -36,5 +36,25 @@ namespace SQLiteDemos.System.Services
                                 .ToListAsync();
         }
         #endregion
+
+        #region Manipluate Data (Add, Update, Delete services)
+
+        //Add a project to the database
+        //you could pass in each pieces of data as a separate parameter
+        //you could pass in an instance of the class as the parameter
+        //Task is used when nothing is returned
+        public async Task Project_Add(Project project)
+        {
+            //Guard Rail
+            ArgumentNullException.ThrowIfNull(project, nameof(project));
+
+            //Stage the add
+            _context.Projects.Add(project);
+
+            //Commit to database
+            await _context.SaveChangesAsync();
+        }
+
+        #endregion
     }
 }

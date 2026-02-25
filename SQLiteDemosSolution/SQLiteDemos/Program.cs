@@ -88,35 +88,75 @@ Department department = new Department();
 department.Code = "SDEV";
 department.DepartmentName = "Software Development";
 
+//send the input data to the database to be persisted
+//this will be the functionality of the application (class library)
+//What services do I need to used? department services
+//How do I reference the department services? departmentServices (via Dependency Injection)
+//****** since the services are async/task the calls will need to have an await *******
+await departmentServices.Department_Add(department);
+
+department = new Department();
+department.Code = "WEBD";
+department.DepartmentName = "Web Development";
+await departmentServices.Department_Add(department);
+
+department = new Department();
+department.Code = "GDEV";
+department.DepartmentName = "Game Development";
+await departmentServices.Department_Add(department);
+
 
 //assume you have an input module to gather the person data
-Person person = new Person("bob",20,97,1);
+await personServices.Person_Add(new Person("Bob G",20,97,1));
+await personServices.Person_Add(new Person("Terry B", 52, 47, 1));
+await personServices.Person_Add(new Person("Don W", 70, 87, 1));
+await personServices.Person_Add(new Person("Terry C", 31, 67, 2));
+await personServices.Person_Add(new Person("Don K", 31, 37, 2));
+await personServices.Person_Add(new Person("Pat T", 53, 65, 3));
+await personServices.Person_Add(new Person("Dan C", 28, 72, 3));
 
+//assume you have an input module to gather the project data
 
-
-
-
-
+// Object Initializer
+// It allows you to:
+//      Create an object
+//      Set its properties
+//      All in one expression
+await projectServices.Project_Add(new Project() { Code= "PRJ01", ProjectName = "Basic C# Lessons" });
+await projectServices.Project_Add(new Project() { Code="PRJ02", ProjectName = "Unit Testing Lessons" });
+await projectServices.Project_Add(new Project() { Code="PRJ03", ProjectName = "Linq, Class Library and Unit Testing Lessons" });
+await projectServices.Project_Add(new Project() { Code="PRJ04", ProjectName = "Client Server Putting it together" });
+await projectServices.Project_Add(new Project() { Code="PRJ05", ProjectName = "WEB Client Server with Blazor" });
 
 
 //use Linq to get the data records from the datastore via the context DbSet
 List<Person> peopleContents = new List<Person>();
-
+peopleContents = await personServices.Person_GetAll();
 
 //display the current contains of People
 foreach( var item in peopleContents)
 {
-    Console.WriteLine($"ID {item.Id} Name: {item.Name} Age: {item.Age} Mark: {item.Mark}");
+    Console.WriteLine($"ID {item.Id} Name: {item.Name} Age: {item.Age} Mark: {item.Mark} Department: {item.DepartmentId}");
 }
 
 //use Linq to get the data records from the datastore via the context DbSet
 List<Department> departmentContents = new List<Department>();
+departmentContents = await departmentServices.Department_GetAll();
 
-
-//display the current contains of People
+//display the current contains of department
 foreach (var item in departmentContents)
 {
     Console.WriteLine($"ID {item.Id} Code: {item.Code} Name: {item.DepartmentName}");
+}
+
+//use Linq to get the data records from the datastore via the context DbSet
+List<Project> projectContents = new List<Project>();
+projectContents = await projectServices.Project_GetAll();
+
+//display the current contains of Project
+foreach (var item in projectContents)
+{
+    Console.WriteLine($"ID {item.Id} Code: {item.Code} Name: {item.ProjectName}");
 }
 
 
