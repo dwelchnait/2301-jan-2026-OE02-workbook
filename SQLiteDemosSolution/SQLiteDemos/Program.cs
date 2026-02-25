@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SQLiteDemos;
 using SQLiteDemos.System.DAL;
 using SQLiteDemos.System.Models;
+using SQLiteDemos.System.Services;
 #endregion
 
 // See https://aka.ms/new-console-template for more information
@@ -28,6 +29,9 @@ Console.WriteLine("\n\t\tHello, SQLite World!\n");
 var dbPath = Path.Combine(
     AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "demo.db");
 
+//var dbPath = Path.Combine(
+//    AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "production.db");
+
 //however we need to know the location of your application on the drive
 //phyiscal absolute address location
 dbPath = Path.GetFullPath(dbPath);
@@ -45,6 +49,24 @@ var options = new DbContextOptionsBuilder<AppDBContext>()
 //create an instance of the context class to be used by the program
 using AppDBContext context = new AppDBContext(options);
 
+//use Dependency Injection to let service classes to know about context to db connection
+//Why This Is Better
+//Your class library should NOT know about:
+//  SQLite
+//  File paths
+//  Connection strings
+
+//That is infrastructure.
+//using this technique loosely couples your service with a context class
+// thus your front end can identify your data stores
+
+//The console app is the "composition root" — it wires everything together.
+//Inform the services class about the DB context connection to use
+var departmentServices = new DepartmentServices(context);
+var personServices = new PersonServices(context);
+var projectServices = new ProjectServices(context);
+
+
 //if you wish to start your application with a clean file on every execution
 // use the following
 //WARNING: if you alter your entities, add a new entity or remove an entity
@@ -61,26 +83,25 @@ context.Database.EnsureCreated();
 
 Console.WriteLine("\nAdding a record to the database");
 
-Person person = new Person("bob",20,97);
-
-//stage the data in memory to the DbSet collection
-context.People.Add(person);
-
-
+//assume you have an input module to gather the department data (prompts, readlines, etc.)
 Department department = new Department();
 department.Code = "SDEV";
 department.DepartmentName = "Software Development";
 
-//stage the data in memory to the DbSet collection
-context.Departments.Add(department);
+
+//assume you have an input module to gather the person data
+Person person = new Person("bob",20,97,1);
 
 
-//persist the data from memory to the database
-context.SaveChanges();
+
+
+
+
+
 
 //use Linq to get the data records from the datastore via the context DbSet
 List<Person> peopleContents = new List<Person>();
-peopleContents = context.People.OrderBy(p => p.Name).ToList();
+
 
 //display the current contains of People
 foreach( var item in peopleContents)
@@ -90,7 +111,7 @@ foreach( var item in peopleContents)
 
 //use Linq to get the data records from the datastore via the context DbSet
 List<Department> departmentContents = new List<Department>();
-departmentContents = context.Departments.OrderBy(d => d.Code).ToList();
+
 
 //display the current contains of People
 foreach (var item in departmentContents)

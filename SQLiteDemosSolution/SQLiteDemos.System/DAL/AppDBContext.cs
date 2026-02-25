@@ -26,6 +26,7 @@ namespace SQLiteDemos.System.DAL
 
         //define a container within our application that will represent
         //  the entity of our datastore
+        //these DbSet is the transfer containers for the datastore data
         public DbSet<Person> People { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Project> Projects { get; set; }
