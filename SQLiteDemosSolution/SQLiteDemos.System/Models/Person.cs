@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using System.ComponentModel.DataAnnotations;
 #endregion
 
-namespace SQLiteDemos.System
+namespace SQLiteDemos.System.Models
 {
     public class Person
     {
@@ -38,13 +38,17 @@ namespace SQLiteDemos.System
         [Range(0, 100, ErrorMessage = "Mark must be a whole number between 0 and 100. eg: 65")]
         public int Mark { get; set; }
 
+        //used for the 1:M relationship between Department and Person
+        public int DepartmentId { get; set; }
+
         //constructors are optional with our setup
         public Person() { }
-        public Person(string name,  int age, int mark)
+        public Person(string name,  int age, int mark, int departmentid)
         {
             Name=name;
             Age=age;
             Mark=mark;
+            DepartmentId=departmentid;
         }
 
         //Navigational property
@@ -54,6 +58,12 @@ namespace SQLiteDemos.System
 
         //when you create your property, you refer to the entity that is
         //  on the other side of your relationship
-        public List<Department> Departments { get; set; } = new List<Department>();
+        //this is a M:M relationship between Person and Project
+        //NOTE: the datatype to a M relationship is a collection (List<T>)
+        public List<Project> Projects { get; set; } = new List<Project>();
+
+        //the relationship between Department and Person is 1:M
+        //NOTE: the datatype to a 1 relationship is an instance
+        public Department Department { get; set; }
     }
 }

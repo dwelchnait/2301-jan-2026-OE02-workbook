@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SQLiteDemos.System.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SQLiteDemos.System
+namespace SQLiteDemos.System.DAL
 {
     //we will need to go to NuGet Packages and include the following
     // MicroSoft.EntityFrameworkCore
@@ -27,6 +28,7 @@ namespace SQLiteDemos.System
         //  the entity of our datastore
         public DbSet<Person> People { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         //map the datastore entity to our application class (entity)
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -56,9 +58,21 @@ namespace SQLiteDemos.System
 
                 // 👇 MANY-TO-MANY CONFIGURATION GOES HERE
                 // place in only ONE of the two entities related
-                //    either this entity People or Department (below)
-                //entity.HasMany(d => d.Departments)
+                //    either this entity People or Project (below)
+                //entity.HasMany(d => d.Projects)
                 // .WithMany(p => p.People);
+            });
+
+            modelBuilder.Entity<Project>(d =>
+            {
+                d.HasKey(e => e.Id);
+                d.HasIndex(e => e.Code).IsUnique();
+
+                // 👇 MANY-TO-MANY CONFIGURATION GOES HERE
+                // place in only ONE of the two entities related
+                //    either this entity Project or People (above)
+                d.HasMany(p => p.People)
+                 .WithMany(d => d.Projects);
             });
 
             modelBuilder.Entity<Department>(d =>
@@ -66,11 +80,15 @@ namespace SQLiteDemos.System
                 d.HasKey(e => e.Id);
                 d.HasIndex(e => e.Code).IsUnique();
 
-                // 👇 MANY-TO-MANY CONFIGURATION GOES HERE
-                // place in only ONE of the two entities related
-                //    either this entity Department or People (above)
+                // 👇 1-TO-MANY CONFIGURATION GOES HERE
+                // indicates many people with one department
+                // indicates the class declaration property to use as the foreign Key
+                // the onDelete is optional but recommend, prevents deleting a department
+                //      that have associated people
                 d.HasMany(p => p.People)
-                 .WithMany(d => d.Departments);
+                 .WithOne(d => d.Department)
+                 .HasForeignKey(p => p.DepartmentId)
+                 .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

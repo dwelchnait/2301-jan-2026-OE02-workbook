@@ -3,8 +3,9 @@ using System.Linq;
 
 #region Additional Namespaces
 using Microsoft.EntityFrameworkCore;
-using SQLiteDemos.System;
 using SQLiteDemos;
+using SQLiteDemos.System.DAL;
+using SQLiteDemos.System.Models;
 #endregion
 
 // See https://aka.ms/new-console-template for more information

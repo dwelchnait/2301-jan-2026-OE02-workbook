@@ -6,7 +6,7 @@ using System.Text;
 using System.ComponentModel.DataAnnotations;
 #endregion
 
-namespace SQLiteDemos.System
+namespace SQLiteDemos.System.Models
 {
     public class Department
     {
@@ -21,6 +21,8 @@ namespace SQLiteDemos.System
         public string DepartmentName { get; set; }
 
         //Navigational property
+        //this is a 1:M relationship between Department and Person
+        //NOTE: the datatype to a M relationship is a collection (List<T>)
         public List<Person> People { get; set; } = new (); //data default to the variable/property datatype
     }
 }
