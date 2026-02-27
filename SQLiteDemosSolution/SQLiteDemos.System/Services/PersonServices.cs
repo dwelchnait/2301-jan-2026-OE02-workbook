@@ -65,6 +65,62 @@ namespace SQLiteDemos.System.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task AssignPersonToProject(int personId, List<string> projectCodes)
+        {
+            //get the projects for current person
+            var person = await _context.People
+                .Include(p => p.Projects) // load existing M:M links
+                .SingleOrDefaultAsync(p => p.Id == personId);
+
+            //does the person exist??
+            if (person == null)
+                throw new ArgumentException("Person not found.");
+
+            //get the projects that match your parameter projectCodes (projects being added to)
+            var projects = await _context.Projects
+                                    .Where(p => projectCodes.Contains(p.Code)).ToListAsync();
+
+            foreach (var project in projects)
+            {
+                //check if the person is already attached to project
+                //  if not add person to project
+                //no validation of entities is needed as they alreay exists (thus valid)
+                //  only creating a link on database between two instances
+                if (!person.Projects.Contains(project))
+                    person.Projects.Add(project);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Person_RemovePersonFromProjectAsync(int personId, int projectId)
+        {
+
+
+            var project = await _context.Projects
+                .Include(p => p.People)
+                .FirstOrDefaultAsync(p => p.Id == projectId);
+
+            if (project == null)
+                throw new KeyNotFoundException("Project not found.");
+
+            var person = project.People
+                .FirstOrDefault(p => p.Id == personId);
+
+            if (person == null)
+                throw new KeyNotFoundException("Person not assigned to this project.");
+
+
+            //EF will:
+
+            //Remove the row from the hidden join table
+            //Leave Person intact
+            //Leave Project intact
+
+            _context.People.Remove(person);
+
+            await _context.SaveChangesAsync();
+        }
         #endregion
     }
 }

@@ -159,4 +159,36 @@ foreach (var item in projectContents)
     Console.WriteLine($"ID {item.Id} Code: {item.Code} Name: {item.ProjectName}");
 }
 
+//How Many-to-Many Works in EF Core
 
+//You have:
+//Person ↔ Project many-to-many
+//EF automatically creates a join table behind the scenes, usually named
+//      something like PersonProject (or similar)
+
+//EF Core:
+
+//Inserts a row into the join table linking that Person → Project
+//Updates in-memory navigation collections if entities are tracked
+//Persists everything to your SQLite database file
+//The created file is an index file containing sets of primary keys from each entity
+//  Person primary key id of 1, 2, 3
+//  Project primary key id of 1,2, 3, 4
+//  table
+// Person / Project
+//   1        2
+//   1        3
+//   2        1
+//   2        2
+//   3        1
+//   3        3
+//   3        4
+
+//Do I need to do addes in both direction people to project and projects to person
+//NO!!!!!!!!! do one or the other. EF handles the other for you
+//What if I attempt to accidently in both directions?
+//  the way the service is coded, if the association already exists, it will be ignored
+//  and not cause an error.
+
+List<string> projectCodes = new List<string> { "PRJ01", "PRJ02" };
+await personServices.AssignPersonToProject(1, projectCodes);

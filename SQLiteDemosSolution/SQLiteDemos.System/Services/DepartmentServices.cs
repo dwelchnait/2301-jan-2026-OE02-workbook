@@ -94,7 +94,26 @@ namespace SQLiteDemos.System.Services
             //this will use await/async
             await _context.SaveChangesAsync();
         }
+        public async Task Department_DeleteDepartmentAsync(int departmentId)
+        {
+            var department = await _context.Departments
+                .FirstOrDefaultAsync(d => d.Id == departmentId);
 
+            if (department == null)
+                throw new KeyNotFoundException("Department not found.");
+
+
+            //using Any or All does not load actual records from db to memory
+            //simply returns a true or false
+            bool hasPeople = await _context.People
+                                            .AnyAsync(p => p.DepartmentId == departmentId);
+            if (hasPeople)
+                throw new ArgumentException("Department has assigned people.");
+
+            _context.Departments.Remove(department);
+
+            await _context.SaveChangesAsync();
+        }
         #endregion
     }
 }
