@@ -15,7 +15,10 @@
 </head>
 
 <body>
-    <Routes />
+    @* rendermode is required to have responses to buttons (any input control) on your components 
+       by placing the rendermode here, you do not need to repeat on each page with a button
+     *@
+    <Routes @rendermode=InteractiveServer/>
     <ReconnectModal />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
 </body>

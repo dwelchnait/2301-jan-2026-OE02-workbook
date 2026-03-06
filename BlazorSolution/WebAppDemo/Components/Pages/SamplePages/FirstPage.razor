@@ -23,11 +23,36 @@
 <h1>First Page</h1>
 <h4>... my first component page</h4>
 
-<p>This is the context portion of the web page</p>
+@*
+    when using any item in C# such  as a variable
+        the variable needs to be declared in the C# coding block at the bottom of this component
+        the variable itself when NOT attached to a input control, is a one-way bind (outward bound)
+*@
+<p>@openingMessage</p>
 
-<p>... by Don Welch</p>
+<label>Enter your name:</label>
 
+@*
+    the inputValue on the input control in the bind attribute is treated as a two-way bind on the component
+    the inputValue is a C# variable 
+*@
+<input @bind="inputValue" />
+
+@*
+    you can use C# flow of control statements on your web to determind if something should be rendered
+    NOTE: on the web page, the {  } are NOT OPTIONAL
+    NOTE: if you use a variable on your page PRIOR to having a value in that variable, your page, when executing,
+            will have an error.
+          SO, best practice is to give each variable an initial value.
+*@
+
+@if (inputValue.Length > 0)
+{
+    <p>... by @inputValue</p>
+}
 
 @code {
     // this is where the C# code will be placed that your page will execute
+    private string openingMessage = "This is the context portion of the web page";
+    private string inputValue = "";
 }
