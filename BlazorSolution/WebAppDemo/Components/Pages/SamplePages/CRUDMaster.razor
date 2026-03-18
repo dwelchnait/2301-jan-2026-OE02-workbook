@@ -29,12 +29,39 @@
 *@
 @if (_assessments.Count > 0)
 {
-    <ul>
-    @foreach(var item in _assessments)
-    {
-       <li>@item.Name @item.Weight @item.Mark @item.MaxMark @item.WeightedMark</li>
-    }
-    </ul>
+    <br/><br/>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3>Assessment Marks</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-2 col-md-8">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Assessment</th>
+                        <th>Weight</th>
+                        <th>Earned Mark</th>
+                        <th>Maximum Mark</th>
+                        <th>Weighted Mark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in _assessments)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Weight</td>
+                            <td>@item.Mark</td>
+                            <td>@item.MaxMark</td>
+                            <td>@item.WeightedMark</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
 else
 {
