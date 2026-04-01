@@ -5,6 +5,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+    <UserSecretsId>fd521a86-d284-45d2-9fe7-098e3c6d7fed</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WestWindSystem\WestWindSystem.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,0 +1,19 @@
+﻿@*
+    this will be a reusable UI component
+    it does NOT have a @page directive at the top of the file
+    it does NOT have a PageTitle tag
+    this component, to be seen, will be call from another component
+*@
+<h3>Greeting</h3>
+
+<h5>Hello @name</h5>
+
+@code {
+    // this property to be used as a parameter 
+    // this property requires that it has an annotation
+    //      stating its use
+    // parameters must be created as  a property (a variable)
+
+    [Parameter]
+    public string name { get; set; } = "Lowand Behold";
+}

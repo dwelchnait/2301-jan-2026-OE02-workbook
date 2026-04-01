@@ -1,0 +1,78 @@
+﻿@page "/lesson24"
+<PageTitle>CRUD and Components</PageTitle>
+
+@*
+    Additional Namespaces
+*@
+@using WebAppDemo.DataModels;
+
+<h1>CRUD Master</h1>
+<h4>....  using reusable form and table components</h4>
+
+<blockquote>
+    This demo will contain:
+    <br />
+    <ul>
+        <li>use of reusable components</li>
+        <li>CallBacks</li>
+        <li>Parameters</li>
+        <li>EditForm component</li>
+        <li>Table component</li>
+        <li>local collection to hold data (List&lt;T&gt;)</li>
+    </ul>
+</blockquote>
+
+<AssessmentForm OnAdd="StoreMark" />
+
+<AssessmentList _assessments="_assessments" OnRemove="RemoveMark" />
+
+
+
+@code {
+    //an instance of List<T> where T is the entity
+    //the initial creation of the list will result in an empty instance
+    public List<Assessment> _assessments = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        /*
+        * this method is a internal method step in processing your
+        *      blazor component page
+        * this method is execute each time the page appears for the
+        *      first time
+        * this method ONLY executes on the first time
+        *
+        * Recommendation: do not remove the base class called for
+        *      the method
+        * There are base functions that should be executed
+        * Your custom setup should be done after the base execution
+        * The override would not cause the base execution to happen
+        * By leaving the base call in, you ensure that any base action
+        *      is done AND any future software updates to the base action
+        *      is done
+        */
+    base.OnInitializedAsync();
+
+            /*
+             * Add any of your own page intialization
+             */
+        _assessments.Add(new Assessment { Name="Lab 1", Weight=5, Mark=2, MaxMark = 5 });
+        _assessments.Add(new Assessment { Name="Lab 2", Weight=5, Mark=5, MaxMark = 5 });
+        _assessments.Add(new Assessment { Name="Lab 3", Weight=5, Mark=12, MaxMark = 14 });
+        _assessments.Add(new Assessment { Name="TakeHome 1", Weight=20, Mark=17, MaxMark = 25 });
+    }
+
+    //where is the parameter value coming from
+    //it will be sent to this method from the called component
+    //the method is on the component tag as an named attribute (OnAdd)
+    //OnAdd is an eventcallback from the component
+    public void StoreMark(Assessment mark)
+    {
+        _assessments.Add(mark);
+    }
+
+    public void RemoveMark(Assessment mark)
+    {
+        _assessments.Remove(mark);
+    }
+}

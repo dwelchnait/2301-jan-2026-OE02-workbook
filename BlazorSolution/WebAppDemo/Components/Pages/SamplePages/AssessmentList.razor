@@ -1,0 +1,79 @@
+﻿@using WebAppDemo.DataModels
+
+@if (_assessments.Count() > 0)
+{
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3>Assessment Marks</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="offset-2 col-md-8">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Assessment</th>
+                        <th>Weight</th>
+                        <th>Earned Mark</th>
+                        <th>Maximum Mark</th>
+                        <th>Weighted Mark</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in _assessments)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Weight</td>
+                            <td>@item.Mark</td>
+                            <td>@item.MaxMark</td>
+                            <td>@item.WeightedMark.ToString("##0.0")</td>
+
+                            @*
+                                    add a button on the table to select for removal
+                                    on the button the onclick will be setup to pass
+                                        back the instance of the particular row
+                                        you have click on
+                                    the onclick will pass back to OnRemove the 
+                                        instance that makes up the current row
+                                *@
+                            <td>
+                                <button class="btn btn-danger rounded-pill"
+                                        @onclick=" () => OnRemove.InvokeAsync(item)">
+                                    Remove
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p>There are no marks on file.</p>
+        </div>
+    </div>
+}
+
+
+
+@code {
+
+    [Parameter]
+    public IEnumerable<Assessment> _assessments { get; set; }
+
+
+    /*
+     * this callback parameter needs to send a piece of data back to the "parent" component
+     * the callback needs to identify the data type of the data being returned
+     *    EventCallback<T> wher T is the datatype of the returning data
+     */
+    [Parameter]
+    public EventCallback<Assessment> OnRemove { get; set; }
+}
