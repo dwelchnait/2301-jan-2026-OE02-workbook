@@ -30,6 +30,7 @@ namespace MauiAppDemo
 
             builder.Services.AddSingleton<IProductServices,MockProductServices>();
             builder.Services.AddSingleton<IUtilitiesServices, UtilitiesServices>();
+            builder.Services.AddSingleton<IPreferenceServices, PreferenceServices>();
 
             return builder.Build();
         }

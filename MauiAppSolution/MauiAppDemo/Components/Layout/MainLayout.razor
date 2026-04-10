@@ -1,4 +1,10 @@
-﻿@inherits LayoutComponentBase
+﻿
+@inherits LayoutComponentBase
+
+<!-- Additional namespaces-->
+@using MauiAppDemo.Services
+<!-- Additional implements-->
+@implements IDisposable
 
 <div class="page">
     <div class="sidebar">
@@ -18,7 +24,32 @@
     </main>
 </div>
 @code{
-    private string Theme => Preferences.Get("app_theme", "light");
-    private string BackgroundColor => Theme == "dark" ? "black" : "white";
-    private string TextColor => Theme == "dark" ? "white" : "black";
+    [Inject]
+    public IPreferenceServices _preferenceServices { get; set; }
+   
+    private string BackgroundColor => _preferenceServices.IsDark ? "black" : "white";
+    private string TextColor => _preferenceServices.IsDark ? "white" : "black";
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _preferenceServices.Load();
+        _preferenceServices.OnChange += Refresh;
+    }
+    private void Refresh()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+    public void Dispose()
+    {
+        _preferenceServices.OnChange -= Refresh;
+    }
+
+    //using navigational approach code
+    //remove service class lines above
+    //remove the Additional lines above also
+
+    // private string Theme { get; set; } = Preferences.Get("app_theme", "light");
+    // private string BackgroundColor => Theme == "dark" ? "black" : "white";
+    // private string TextColor => Theme == "dark" ? "white" : "black";
 }
