@@ -10,6 +10,23 @@
             in the vertical view of the andriod emulator
     -->
     <Grid RowDefinitions="Auto,*">
+
+        <!-- MAUI Label that reacts to theme 
+              look at the header of the page under the icons
+             preferences will automatically be applied to MAUI controls
+                 that is native controls on a xaml page
+         -->
+        <!--<Label x:Name="DemoLabel"
+            Grid.Row="0"
+            Text="This (Label control) reacts to MAUI theme because I am on the MainPage.xaml file which is MAUI"
+            FontSize="18"
+            TextColor="{AppThemeBinding Light=Black, Dark=White}"
+            BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+            HorizontalOptions="Center"
+            VerticalOptions="End" 
+               Padding="20"/>-->
+
+        <!-- BlazorWebView in the second row -->
         <BlazorWebView Grid.Row="1" x:Name="blazorWebView" HostPage="wwwroot/index.html">
             <BlazorWebView.RootComponents>
                 <RootComponent Selector="#app" ComponentType="{x:Type components:Routes}" />

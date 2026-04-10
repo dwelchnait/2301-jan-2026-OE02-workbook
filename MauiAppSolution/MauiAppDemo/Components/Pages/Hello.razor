@@ -20,6 +20,25 @@
 <p>this is a Razor page running inside a native app</p>
 <p><strong>Platform:</strong>@DeviceInfo.Current.Platform</p>
 <p><strong>OS:</strong>@DeviceInfo.Current.VersionString</p>
+
+@*
+    NetworkAccess is an enum
+    NetworkAccess.Internet
+    NetworkAccess.ConstrainedInternet
+    NetworkAccess.Local
+    NetworkAccess.None
+    NetworkAccess.Unknown
+*@
+<p><strong>Connectivity:</strong> @Connectivity.Current.NetworkAccess.ToString()</p>
+
+@*
+    EnergySaverStatus is an enum
+    EnergySaverStatus.Off
+    EnergySaverStatus.On
+    EnergySaverStatus.Unknown
+
+*@
+<p><strong>Battert Energy Saver Status:</strong> @Battery.EnergySaverStatus.ToString()</p>
 @code {
 
 }
