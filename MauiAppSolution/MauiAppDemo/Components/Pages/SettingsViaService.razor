@@ -4,6 +4,8 @@
 <!-- Additional namespaces-->
 @using MauiAppDemo.Services
 
+<!-- alternate way to do injections-->
+@inject IPreferenceServices _preferenceServices
 
 <h3>Settings Via Service</h3>
 
@@ -18,9 +20,11 @@
 <p>@ThemeText</p>
 
 @code {
-    [Inject]
-    public IPreferenceServices _preferenceServices { get; set; }
-
+    //this inject technique could be replaced with the alternate style
+    //      see above
+    // [Inject]
+    // public IPreferenceServices _preferenceServices { get; set; }
+ 
     private bool IsDarkMode
     {
         get => _preferenceServices.IsDark;
@@ -28,8 +32,5 @@
 
     }
     private string ThemeText => IsDarkMode ? "Dark Mode" : "Light Mode";
-    
-   
 
-   
 }

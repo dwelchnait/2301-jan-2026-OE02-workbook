@@ -6,25 +6,27 @@ namespace MauiAppDemo.Services
 {
     public class PreferenceServices : IPreferenceServices
     {
-        private const string ThemeKey = "app_theme";
-      //  private const string FontSizeKey = "font_size";
+        //do not want to retype throughout the class the same string over and over again
+        //tip: create a constant variable.
+        private const string ThemeKey = "app_theme"; 
+        private const string FontSizeKey = "font_size"; 
 
-        public event Action? OnChange;
+        public event Action? OnChange; //interface
 
         //changing of preference can ONLY be done within this class!!!!
-        public string Theme { get; private set; } = "light";
-       // public int FontSize { get; private set; } = 16;
+        public string Theme { get; private set; } = "light"; //interface
+        public int FontSize { get; private set; } = 16; //interface
 
-        public bool IsDark => Theme == "dark";
+        public bool IsDark => Theme == "dark"; //interface
 
-        public void Load()
+        public void Load() //interface
         {
             //get current setting
             Theme = Preferences.Get(ThemeKey, "light");
-        //    FontSize = Preferences.Get(FontSizeKey, 16);
+            FontSize = Preferences.Get(FontSizeKey, 16);
         }
 
-        public void SetTheme(bool dark)
+        public void SetTheme(bool dark) //interface
         {
             //light or dark?
             Theme = dark ? "dark" : "light";
@@ -34,12 +36,12 @@ namespace MauiAppDemo.Services
             Notify();
         }
 
-        //public void SetFontSize(int size)
-        //{
-        //    FontSize = size;
-        //    Preferences.Set(FontSizeKey, size);
-        //    Notify();
-        //}
+        public void SetFontSize(int size) //interface
+        {
+            FontSize = size;
+            Preferences.Set(FontSizeKey, size);
+            Notify();
+        }
 
         //signal system of change
         //OnChange is an event variable

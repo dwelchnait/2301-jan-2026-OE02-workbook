@@ -7,7 +7,7 @@ namespace MauiAppDemo.Services
     public interface IPreferenceServices
     {
         string Theme { get; }
-        //int FontSize { get; } //student to practice
+        int FontSize { get; } //student to practice
 
         bool IsDark { get; }
 
@@ -16,6 +16,6 @@ namespace MauiAppDemo.Services
         void Load();
 
         void SetTheme(bool dark);
-        //void SetFontSize(int size); //student to practice
+        void SetFontSize(int size); //student to practice
     }
 }
