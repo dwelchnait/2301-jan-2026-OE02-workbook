@@ -1,4 +1,8 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@* will be using injected services and implementation of IDisposable*@
+@inject NavigationManager navManager
+@implements IDisposable
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">MauiAppDemo</a>
     </div>
@@ -8,6 +12,20 @@
 
 <div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
     <nav class="nav flex-column">
+    @*
+        Lesson 40 Simple authentication using a Login screen
+    *@
+    @if (isLoggedIn) //am I logged in?
+    {
+        @* display the Logout menu item
+            notice no href instead there is a method
+            why? we are leaving the applicaiton NOT going to another page
+        *@
+        <div class="nav-item px-3">
+            <NavLink class="nav-link d-flex align-items-center" @onclick="Logout">
+                <i class="bi bi-door-closed fs-5 me-2"></i>&nbsp; Logout
+            </NavLink>
+        </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
@@ -101,5 +119,81 @@
                 <i class="bi bi-gear-fill fs-5 me-2"></i>&nbsp; Settings Services
             </NavLink>
         </div>
+
+       
+        }
+        else
+        {
+            @* display the Login menu item
+                notice the standard href on this menu item directing one to the
+                    login page
+            *@
+            <div class="nav-item px-3">
+                <NavLink class="nav-link d-flex align-items-center" href="login">
+                    <i class="bi bi-door-open fs-5 me-2"></i>&nbsp; Login
+                </NavLink>
+            </div>
+        }
     </nav>
 </div>
+
+@code {
+    private bool isLoggedIn = false;
+
+    /*
+     * the application begins --> NavMenu initializes, this runs every time the app launches
+     * async processing due to the eventual use of SecureStorage
+     */
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync(); //optional
+
+        //as soon as a component exists, have menu listen for a location change
+        navManager.LocationChanged += OnLocationChanged;
+        await CheckLoginAsync();
+
+    }
+    private async Task CheckLoginAsync()
+    {
+        //retrieve a possible login token from SecureStorage
+        //use the key word name given to the token storage
+        var token = await SecureStorage.Default.GetAsync("authToken");
+
+        /*
+        * if the token is not found the returned value is null else
+            *  the token is returned
+            *
+            * set a true or false to the isLoggedIn variable
+             * we are not concerned with the contents of the token in this example
+            * the token only indicates the app has been logged into NOT
+             *      that the user is appropriate or valid
+            */
+        isLoggedIn = !string.IsNullOrEmpty(token);
+    }
+
+    private async void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        await CheckLoginAsync();
+        //notify the system that something has changed
+        await InvokeAsync(StateHasChanged);
+
+    }
+
+    public void Dispose()
+    {
+        //dispose of the OnLocationChanged
+        navManager.LocationChanged -= OnLocationChanged;
+    }
+
+    /*
+    * logoff requirements
+    * remove the entry from SecureStorage using the key word name
+    */
+    private async Task Logout()
+    {
+        SecureStorage.Default.Remove("authToken");
+        isLoggedIn = false;
+        //force the login page to be displayed (cause by second parameter)
+        navManager.NavigateTo("/login", true);
+    }
+}
